@@ -1,0 +1,8 @@
+delimiter $
+create trigger comicao_consultor after insert
+on Projeto
+for each row
+begin
+	update consultor set comissao = comissao + (new.orcamento * 0.03) where new.fk_consultor_cod_cod_consultor = consultor.cod_consultor;
+end $
+delimiter ; 

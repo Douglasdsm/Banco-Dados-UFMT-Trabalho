@@ -1,0 +1,174 @@
+/* DER: */
+
+CREATE TABLE Cliente (
+    Cod_Cliente INTEGER PRIMARY KEY,
+    Nome VARCHAR,
+    Email VARCHAR,
+    Tipo_Cliente ENUM
+);
+
+CREATE TABLE Projeto (
+    Cod_P INTEGER PRIMARY KEY,
+    Local VARCHAR,
+    Orçamento DOUBLE,
+    Descrição VARCHAR,
+    fk_Cliente_Cod_Cliente INTEGER,
+    Nome_Projeto VARCHAR,
+    DataInicio DATE,
+    Prazo DATE,
+    fk_Consultor_Cod_cod_Consultor INTEGER
+);
+
+CREATE TABLE Equipe (
+    Cod_Eq INTEGER PRIMARY KEY,
+    Numero_Participantes INTEGER,
+    Nome_Equipe VARCHAR
+);
+
+CREATE TABLE Consultor (
+    cod_Consultor INTEGER PRIMARY KEY,
+    Nome VARCHAR,
+    CNPJ VARCHAR,
+    Comissão DOUBLE
+);
+
+CREATE TABLE Funcionario (
+    Cod_F INTEGER PRIMARY KEY,
+    CPF VARCHAR,
+    Cargo VARCHAR,
+    Nome VARCHAR,
+    Salario DOUBLE,
+    DataNasc DATE
+);
+
+CREATE TABLE Tipo (
+    Cod_Tipo INTEGER PRIMARY KEY,
+    Nome VARCHAR,
+    Descricao VARCHAR
+);
+
+CREATE TABLE Pessoa Juridica (
+    CNPJ VARCHAR,
+    Razao_Social VARCHAR,
+    Cod_cliente INTEGER
+);
+
+CREATE TABLE Pessoa Fisica (
+    CPF VARCHAR,
+    DataNasc DATE,
+    Cod_Cliente INTEGER
+);
+
+CREATE TABLE Funcionario_Equipe (
+    fk_Funcionario_Cod_F INTEGER,
+    fk_Equipe_Cod_F INTEGER
+);
+
+CREATE TABLE Tipo_Projeto (
+    fk_Tipo_Cod_Tipo INTEGER,
+    fk_Projeto_Cod_P INTEGER
+);
+
+CREATE TABLE EnderecoFuncionario (
+    Cod_F INTEGER,
+    Rua VARCHAR,
+    Bairro VARCHAR,
+    CEP VARCHAR,
+    Numero VARCHAR,
+    Referencia VARCHAR,
+    Cidade VARCHAR,
+    Estado VARCHAR,
+    Pais VARCHAR,
+    Cod_En INTEGER PRIMARY KEY
+);
+
+CREATE TABLE TelefoneFuncionario (
+    Cod_F INTEGER,
+    Telefone VARCHAR,
+    Cod_T INTEGER PRIMARY KEY
+);
+
+CREATE TABLE EnderecoCliente (
+    Cod_C INTEGER,
+    Rua VARCHAR,
+    Bairro VARCHAR,
+    CEP VARCHAR,
+    Numero VARCHAR,
+    Referencia VARCHAR,
+    Cidade VARCHAR,
+    Estado VARCHAR,
+    Pais VARCHAR,
+    Cod_En INTEGER PRIMARY KEY
+);
+
+CREATE TABLE ClienteTelefone (
+    Cod_C INTEGER,
+    Telefone VARCHAR,
+    Cod_T INTEGER PRIMARY KEY
+);
+
+CREATE TABLE Historico_de_Comissao (
+    FK_Projeto INTEGER,
+    FK_Consultor INTEGER,
+    Comissao INTEGER
+);
+ 
+ALTER TABLE Projeto ADD CONSTRAINT FK_Projeto_2
+    FOREIGN KEY (fk_Cliente_Cod_Cliente)
+    REFERENCES Cliente (Cod_Cliente)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Projeto ADD CONSTRAINT FK_Projeto_3
+    FOREIGN KEY (fk_Consultor_Cod_cod_Consultor)
+    REFERENCES Consultor (cod_Consultor);
+ 
+ALTER TABLE Pessoa Juridica ADD CONSTRAINT FK_Pessoa Juridica_1
+    FOREIGN KEY (Cod_cliente)
+    REFERENCES Cliente (Cod_Cliente);
+ 
+ALTER TABLE Pessoa Fisica ADD CONSTRAINT FK_Pessoa Fisica_1
+    FOREIGN KEY (Cod_Cliente)
+    REFERENCES Cliente (Cod_Cliente);
+ 
+ALTER TABLE Funcionario_Equipe ADD CONSTRAINT FK_Funcionario_Equipe_1
+    FOREIGN KEY (fk_Funcionario_Cod_F)
+    REFERENCES Funcionario (Cod_F)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Funcionario_Equipe ADD CONSTRAINT FK_Funcionario_Equipe_2
+    FOREIGN KEY (fk_Equipe_Cod_F)
+    REFERENCES Equipe (Cod_Eq);
+ 
+ALTER TABLE Tipo_Projeto ADD CONSTRAINT FK_Tipo_Projeto_1
+    FOREIGN KEY (fk_Tipo_Cod_Tipo)
+    REFERENCES Tipo (Cod_Tipo)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Tipo_Projeto ADD CONSTRAINT FK_Tipo_Projeto_2
+    FOREIGN KEY (fk_Projeto_Cod_P)
+    REFERENCES Projeto (Cod_P)
+    ON DELETE SET NULL;
+ 
+ALTER TABLE EnderecoFuncionario ADD CONSTRAINT FK_EnderecoFuncionario_1
+    FOREIGN KEY (Cod_F)
+    REFERENCES Funcionario (Cod_F);
+ 
+ALTER TABLE TelefoneFuncionario ADD CONSTRAINT FK_TelefoneFuncionario_1
+    FOREIGN KEY (Cod_F)
+    REFERENCES Funcionario (Cod_F);
+ 
+ALTER TABLE EnderecoCliente ADD CONSTRAINT FK_EnderecoCliente_1
+    FOREIGN KEY (Cod_C)
+    REFERENCES Cliente (Cod_Cliente);
+ 
+ALTER TABLE ClienteTelefone ADD CONSTRAINT FK_ClienteTelefone_1
+    FOREIGN KEY (Cod_C)
+    REFERENCES Cliente (Cod_Cliente);
+ 
+ALTER TABLE Historico_de_Comissao ADD CONSTRAINT FK_Historico_de_Comissao_1
+    FOREIGN KEY (FK_Consultor)
+    REFERENCES Consultor (cod_Consultor);
+ 
+ALTER TABLE Historico_de_Comissao ADD CONSTRAINT FK_Historico_de_Comissao_2
+    FOREIGN KEY (FK_Projeto)
+    REFERENCES Projeto (Cod_P);

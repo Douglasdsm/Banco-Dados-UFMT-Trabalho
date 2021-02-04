@@ -1,0 +1,9 @@
+insert into cliente values(default,'DOUGLAS','douglas@gmail.com','PF');
+insert into Consultor values(default,'MICHAEL','45.997.418/0001-53',0.03);
+insert into Projeto values(default,'Rio de Janeiro',100.000,'Projeto Software de Venda Varejo',1,'DSM','2019-06-20','2019-09-22',1);
+  
+select* from cliente;
+select* from Consultor;
+select* from Projeto;
+select* from Historico_de_Comissao;
+drop trigger tr_comicao_Historico;
